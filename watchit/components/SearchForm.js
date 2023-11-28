@@ -1,8 +1,10 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import styles from './SearchForm.module.css';
 
-export default function SearchForm({ initialValue = "" }) {
+export default function SearchForm({ initialValue = '' }) {
   const [value, setValue] = useState(initialValue);
+  const router = useRouter();
 
   function handleChange(e) {
     setValue(e.target.value);
@@ -11,15 +13,21 @@ export default function SearchForm({ initialValue = "" }) {
   function handleSubmit(e) {
     e.preventDefault();
     if (!value) {
-      router.push("/");
+      return router.push('/');
     }
-    router.push(`/search?q=${value}`);
+    return router.push(`/search?q=${value}`);
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <input name="q" value={value} onChange={handleChange} />
-      <button>검색</button>
+      <input
+        className={styles.input}
+        name="q"
+        value={value}
+        placeholder="영화를 검색해보세요."
+        onChange={handleChange}
+      />
+      <button className={styles.button}>검색</button>
     </form>
   );
 }

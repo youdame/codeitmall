@@ -11,6 +11,7 @@ export default function Home() {
 
   async function getProducts() {
     const res = await axios.get('/products');
+
     const nextProducts = res.data.results;
     setProducts(nextProducts);
   }
