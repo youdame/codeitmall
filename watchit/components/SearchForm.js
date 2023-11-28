@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function SearchForm({ initialValue = "" }) {
   const [value, setValue] = useState(initialValue);
-  const router = useRouter();
+
   function handleChange(e) {
     setValue(e.target.value);
   }
@@ -12,7 +12,6 @@ export default function SearchForm({ initialValue = "" }) {
     e.preventDefault();
     if (!value) {
       router.push("/");
-      return;
     }
     router.push(`/search?q=${value}`);
   }

@@ -1,5 +1,15 @@
-// <>Search 페이지</>
+import SearchForm from "@/components/SearchForm";
+import { useRouter } from "next/router";
 
 export default function Search() {
-  return <div>Search 페이지</div>;
+  const router = useRouter();
+  const q = router.query["q"];
+
+  return (
+    <>
+      <h1>watchit</h1>
+      <SearchForm initialValue={q} />
+      <h2>{q} 검색 결과</h2>
+    </>
+  );
 }
