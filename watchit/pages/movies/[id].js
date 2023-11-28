@@ -1,24 +1,49 @@
-import { useRouter } from 'next/router';
-import Container from '@/components/Container';
-import Header from '@/components/Header';
-import MovieReviewList from '@/components/MovieReviewList';
-import styles from '@/styles/Movie.module.css';
-import mock from '@/mock.json'; // 이 코드를 지우고 API를 연동해 주세요
+import { useRouter } from "next/router";
+import Container from "@/components/Container";
+import Header from "@/components/Header";
+import MovieReviewList from "@/components/MovieReviewList";
+import styles from "@/styles/Movie.module.css";
+import mock from "@/mock.json"; // 이 코드를 지우고 API를 연동해 주세요
+import axios from "@/lib/axios";
+import { useEffect, useState } from "react";
 
 const labels = {
   rating: {
-    12: '12세이상관람가',
-    15: '15세이상관람가',
-    19: '청소년관람불가',
-    all: '전체관람가',
+    12: "12세이상관람가",
+    15: "15세이상관람가",
+    19: "청소년관람불가",
+    all: "전체관람가",
   },
 };
 
 export default function Movie() {
   const router = useRouter();
-  const id = router.query['id'];
-  const movie = mock.movies[0]; // 이 코드를 지우고 API를 연동해 주세요
-  const movieReviews = mock.movie_reviews; // 이 코드를 지우고 API를 연동해 주세요
+  const id = router.query["id"];
+  const [movie, setMovie] = useState([]);
+
+  const [movieReviews, setMovieReviews] = useState([]);
+  const getMovie = async (targetId) => {
+    const res = await axios.get(`/movies/${targetId}`);
+
+    const nextMovie = res.data;
+    setMovie(nextMovie);
+  };
+
+  const getMovieReviews = async (targetId) => {
+    const res = await axios.get(`/movie_reviews/?movie_id=${targetId}`);
+    console.log(res);
+    const nextReviews = res.data.results ?? [];
+    // console.log(nextReviews);
+    setMovieReviews(nextReviews);
+  };
+  useEffect(() => {
+    getMovie(id);
+    getMovieReviews(id);
+  }, [id]);
+  if (!movie) return null;
+
+  // const movie = mock.movies[0]; // 이 코드를 지우고 API를 연동해 주세요
+  // const movieReviews = mock.movie_reviews; // 이 코드를 지우고 API를 연동해 주세요
 
   return (
     <>
@@ -51,7 +76,7 @@ export default function Movie() {
                   <th>러닝타임</th> <td>{movie.runningTime}분</td>
                 </tr>
                 <tr>
-                  <th>평점</th>{' '}
+                  <th>평점</th>{" "}
                   <td className={styles.starRating}>★{movie.starRating}</td>
                 </tr>
               </tbody>

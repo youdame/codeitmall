@@ -11,6 +11,7 @@ export default function Home() {
 
   async function getMovies() {
     const res = await axios.get("/movies/");
+    console.log(res);
     const movies = res.data.results ?? [];
     setMovies(movies);
   }
