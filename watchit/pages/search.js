@@ -27,7 +27,6 @@ export default function Search() {
 
   return (
     <>
-      <Header />
       <Container page>
         <SearchForm initialValue={q} />
         <h2 className={styles.title}>

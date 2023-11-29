@@ -48,7 +48,6 @@ export default function Movie() {
 
   return (
     <>
-      <Header />
       <Container page>
         <div className={styles.header}>
           <img
